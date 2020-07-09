@@ -1,0 +1,19 @@
+template_path: vpc.yaml
+stack_name: "{{ var.vpc_stack_name }}"
+region: us-east-1
+
+parameters: 
+  EnvironmentName: "{{ var.env }}"
+  VpcCIDR: "{{ var.vpcIP }}"
+  VPCtag: "{{ var.tagname }}"
+  exportVpcname: "{{ var.exvpc }}"
+#  PublicSubnet1: 10.100.10.0/24
+
+# CloudFormation Stack Delete Protection 
+hooks:
+  after_create:
+    - !cmd aws cloudformation --region us-east-1 update-termination-protection --enable-termination-protection --stack-name {{ var.vpc_stack_name }}
+
+# CloudFormation Stack DISABLE Delete Protection before it deletes stack
+  before_delete:
+    - !cmd aws cloudformation --region us-east-1 update-termination-protection --no-enable-termination-protection --stack-name {{ var.vpc_stack_name }}

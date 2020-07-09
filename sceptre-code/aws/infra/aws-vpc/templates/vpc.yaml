@@ -1,0 +1,42 @@
+---
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "VPC setup and used multiple project"
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+  VpcCIDR:
+    Description: Please enter the IP range (CIDR notation) for this VPC
+    Type: String
+    Default: 10.192.0.0/16
+  
+  VPCtag:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+  exportVpcname:
+    Description: An environment name that is prefixed to resource names
+    Type: String
+
+Resources:
+  myvpc01:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: !Ref VPCtag
+        - Key: Envirnoment
+          Value: !Ref EnvironmentName  
+
+Outputs:
+  VPC:
+    Description: A reference to the created VPC
+    Value: !Ref myvpc01
+    Export:
+      Name: !Ref exportVpcname

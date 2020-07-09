@@ -1,0 +1,5 @@
+project_code: aws-vpc
+region: us-east-1
+template_bucket_name: sample06072020
+
+
